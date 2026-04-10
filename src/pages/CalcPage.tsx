@@ -310,11 +310,11 @@ export default function CalcPage() {
   const catEntries = Object.entries(UNIT_CONVERSIONS) as [UnitCategory, typeof UNIT_CONVERSIONS[UnitCategory]][];
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-6 md:py-12 px-3 md:px-4">
       <div className="max-w-2xl mx-auto animate-fade-in-up">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-serif font-bold gold-text mb-2">Калькулятор</h1>
-          <p className="text-muted-foreground font-sans text-sm">Научные вычисления и перевод единиц</p>
+        <div className="text-center mb-5 md:mb-8">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold gold-text mb-1 md:mb-2">Калькулятор</h1>
+          <p className="text-muted-foreground font-sans text-xs md:text-sm">Научные вычисления и перевод единиц</p>
         </div>
 
         {/* Tab switcher */}
@@ -345,11 +345,11 @@ export default function CalcPage() {
         {activeTab === "calc" && (
           <div className="rounded-2xl border border-border/70 bg-card overflow-hidden shadow-2xl">
             {/* Display */}
-            <div className="p-5 bg-background/60 border-b border-border/50 min-h-[90px]">
+            <div className="p-3 md:p-5 bg-background/60 border-b border-border/50 min-h-[75px] md:min-h-[90px]">
               <div className="text-right">
-                <div className="text-xs text-muted-foreground font-mono min-h-[18px] mb-1 truncate">{expression || "\u00A0"}</div>
-                <div className="text-4xl font-mono font-semibold text-foreground truncate leading-tight"
-                  style={{ fontSize: display.length > 12 ? "1.6rem" : display.length > 8 ? "2rem" : "2.5rem" }}>
+                <div className="text-xs text-muted-foreground font-mono min-h-[16px] mb-1 truncate">{expression || "\u00A0"}</div>
+                <div className="font-mono font-semibold text-foreground truncate leading-tight"
+                  style={{ fontSize: display.length > 12 ? "1.3rem" : display.length > 8 ? "1.6rem" : "2rem" }}>
                   {display}
                 </div>
               </div>
@@ -372,12 +372,12 @@ export default function CalcPage() {
 
             {/* Scientific buttons */}
             {sciMode && (
-              <div className="px-4 pt-3 grid grid-cols-4 gap-2">
+              <div className="px-2 md:px-4 pt-2 md:pt-3 grid grid-cols-4 gap-1.5 md:gap-2">
                 {SCI_BUTTONS.flat().map((btn) => (
                   <button
                     key={btn}
                     onClick={() => handleCalc(btn)}
-                    className={`calc-btn h-10 rounded-lg border font-mono text-sm transition-all hover:scale-105 active:scale-95 ${getSciStyle(btn)}`}
+                    className={`calc-btn min-h-[44px] h-10 md:h-11 rounded-lg border font-mono text-xs md:text-sm transition-all active:scale-95 ${getSciStyle(btn)}`}
                   >
                     {btn}
                   </button>
@@ -386,12 +386,12 @@ export default function CalcPage() {
             )}
 
             {/* Main buttons */}
-            <div className="p-4 grid grid-cols-4 gap-2.5">
+            <div className="p-2 md:p-4 grid grid-cols-4 gap-1.5 md:gap-2.5">
               {BUTTONS.flat().map((btn, i) => (
                 <button
                   key={`${btn}-${i}`}
                   onClick={() => handleCalc(btn)}
-                  className={`calc-btn h-14 rounded-xl border font-mono text-lg font-medium transition-all hover:scale-105 active:scale-95 ${getBtnStyle(btn)}`}
+                  className={`calc-btn min-h-[52px] h-12 md:h-14 rounded-xl border font-mono text-base md:text-lg font-medium transition-all active:scale-95 ${getBtnStyle(btn)}`}
                 >
                   {btn}
                 </button>
@@ -401,7 +401,7 @@ export default function CalcPage() {
         )}
 
         {activeTab === "geo" && (
-          <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xl animate-scale-in">
+          <div className="rounded-2xl border border-border/70 bg-card p-4 md:p-6 shadow-2xl animate-scale-in">
             {/* Area / Volume toggle */}
             <div className="flex rounded-lg border border-border overflow-hidden mb-6">
               <button
@@ -421,15 +421,15 @@ export default function CalcPage() {
             </div>
 
             {/* Shape selector */}
-            <div className="grid grid-cols-4 gap-2 mb-6">
+            <div className="grid grid-cols-4 gap-1.5 md:gap-2 mb-5 md:mb-6">
               {GEO_SHAPES.filter(s => geoMode === "area" ? !s.formulas.volume : !!s.formulas.volume).map(s => (
                 <button
                   key={s.id}
                   onClick={() => { setGeoShape(s.id); setGeoInputs({}); setGeoResult(null); }}
-                  className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border text-xs font-sans font-medium transition-all hover:scale-105 ${geoShape === s.id ? "bg-primary/15 border-primary/50 text-primary" : "bg-secondary border-border text-muted-foreground hover:text-foreground hover:border-primary/30"}`}
+                  className={`flex flex-col items-center gap-0.5 md:gap-1 py-2 md:py-3 px-1 md:px-2 rounded-xl border text-xs font-sans font-medium transition-all hover:scale-105 min-h-[60px] ${geoShape === s.id ? "bg-primary/15 border-primary/50 text-primary" : "bg-secondary border-border text-muted-foreground hover:text-foreground hover:border-primary/30"}`}
                 >
-                  <span className="text-xl">{s.emoji}</span>
-                  <span>{s.label}</span>
+                  <span className="text-lg md:text-xl">{s.emoji}</span>
+                  <span className="text-[10px] md:text-xs text-center leading-tight">{s.label}</span>
                 </button>
               ))}
             </div>

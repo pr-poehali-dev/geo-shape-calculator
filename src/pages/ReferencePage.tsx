@@ -123,11 +123,11 @@ export default function ReferencePage() {
   });
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-6 md:py-12 px-3 md:px-4">
       <div className="max-w-4xl mx-auto animate-fade-in-up">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-serif font-bold gold-text mb-2">Справочник</h1>
-          <p className="text-muted-foreground font-sans text-sm">Математика, физика, тригонометрия, анализ</p>
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold gold-text mb-1 md:mb-2">Справочник</h1>
+          <p className="text-muted-foreground font-sans text-xs md:text-sm">Математика, физика, тригонометрия, анализ</p>
         </div>
 
         {/* Search */}
@@ -148,7 +148,7 @@ export default function ReferencePage() {
             <button
               key={cat.id}
               onClick={() => setActiveCat(cat.id)}
-              className={`px-4 py-1.5 rounded-full text-sm font-sans font-medium border transition-all hover:scale-105 ${activeCat === cat.id ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border text-muted-foreground hover:text-foreground hover:border-primary/40"}`}
+              className={`px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs md:text-sm font-sans font-medium border transition-all hover:scale-105 min-h-[36px] ${activeCat === cat.id ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border text-muted-foreground hover:text-foreground hover:border-primary/40"}`}
             >
               {cat.label}
             </button>
@@ -169,11 +169,11 @@ export default function ReferencePage() {
               style={{ animationDelay: `${i * 0.04}s` }}
             >
               <button
-                className="w-full p-5 text-left flex items-start justify-between gap-4"
+                className="w-full p-3 md:p-5 text-left flex items-start justify-between gap-3 md:gap-4 min-h-[44px]"
                 onClick={() => setExpanded(expanded === f.id ? null : f.id)}
               >
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-1.5 md:mb-2">
                     <span className={`text-xs px-2 py-0.5 rounded-md font-mono border ${
                       f.cat === "algebra" ? "border-blue-500/30 text-blue-400 bg-blue-500/8" :
                       f.cat === "geometry" ? "border-green-500/30 text-green-400 bg-green-500/8" :
@@ -184,8 +184,8 @@ export default function ReferencePage() {
                       {CATEGORIES.find(c => c.id === f.cat)?.label}
                     </span>
                   </div>
-                  <div className="font-sans font-semibold text-foreground text-sm mb-2">{f.title}</div>
-                  <div className="font-mono text-primary text-base tracking-wide">{f.formula}</div>
+                  <div className="font-sans font-semibold text-foreground text-xs md:text-sm mb-1 md:mb-2">{f.title}</div>
+                  <div className="font-mono text-primary text-sm md:text-base tracking-wide break-all">{f.formula}</div>
                 </div>
                 <Icon
                   name="ChevronDown"
@@ -195,13 +195,13 @@ export default function ReferencePage() {
               </button>
 
               {expanded === f.id && (
-                <div className="px-5 pb-5 border-t border-border/40 pt-4 animate-fade-in-up">
-                  <p className="text-sm text-muted-foreground font-sans mb-4 leading-relaxed">{f.desc}</p>
+                <div className="px-3 md:px-5 pb-3 md:pb-5 border-t border-border/40 pt-3 md:pt-4 animate-fade-in-up">
+                  <p className="text-xs md:text-sm text-muted-foreground font-sans mb-3 md:mb-4 leading-relaxed">{f.desc}</p>
                   <div className="space-y-2">
                     <div className="text-xs text-muted-foreground font-sans uppercase tracking-wider mb-2">Обозначения</div>
                     {f.vars.map(([sym, def]) => (
-                      <div key={sym} className="flex gap-3 text-sm">
-                        <span className="font-mono text-primary min-w-[80px] flex-shrink-0">{sym}</span>
+                      <div key={sym} className="flex gap-2 md:gap-3 text-xs md:text-sm">
+                        <span className="font-mono text-primary min-w-[60px] md:min-w-[80px] flex-shrink-0">{sym}</span>
                         <span className="text-muted-foreground font-sans">— {def}</span>
                       </div>
                     ))}

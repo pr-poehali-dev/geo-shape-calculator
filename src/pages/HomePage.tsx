@@ -79,11 +79,11 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
       </div>
 
       {/* Hero */}
-      <section className="relative pt-28 pb-20 px-6 text-center math-grid">
+      <section className="relative pt-20 md:pt-28 pb-12 md:pb-20 px-4 md:px-6 text-center math-grid">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/0 to-background pointer-events-none" />
         <div className="relative max-w-4xl mx-auto">
           <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/8 text-primary text-sm font-sans mb-6 animate-fade-in-up"
+            className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 rounded-full border border-primary/30 bg-primary/8 text-primary text-xs md:text-sm font-sans mb-4 md:mb-6 animate-fade-in-up"
             style={{ animationDelay: "0.1s" }}
           >
             <span className="font-mono text-xs tracking-widest opacity-70">v1.0</span>
@@ -92,7 +92,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
           </div>
 
           <h1
-            className="text-5xl md:text-7xl font-serif font-black leading-tight mb-6 animate-fade-in-up"
+            className="text-4xl sm:text-5xl md:text-7xl font-serif font-black leading-tight mb-4 md:mb-6 animate-fade-in-up"
             style={{ animationDelay: "0.2s" }}
           >
             <span className="gold-text">Мат</span>
@@ -100,7 +100,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
           </h1>
 
           <p
-            className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up"
+            className="text-sm sm:text-base md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto leading-relaxed mb-7 md:mb-10 animate-fade-in-up"
             style={{ animationDelay: "0.35s" }}
           >
             Профессиональный научный калькулятор с поддержкой единиц измерения,
@@ -113,13 +113,13 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
           >
             <button
               onClick={() => onNavigate("calc")}
-              className="px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-sans font-semibold text-base hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 animate-pulse-glow"
+              className="px-5 py-3 md:px-8 md:py-3.5 rounded-lg bg-primary text-primary-foreground font-sans font-semibold text-sm md:text-base hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 animate-pulse-glow min-h-[44px]"
             >
               Открыть калькулятор
             </button>
             <button
               onClick={() => onNavigate("formulas")}
-              className="px-8 py-3.5 rounded-lg border border-border bg-card text-foreground font-sans font-medium text-base hover:border-primary/50 hover:bg-secondary transition-all hover:scale-105 active:scale-95"
+              className="px-5 py-3 md:px-8 md:py-3.5 rounded-lg border border-border bg-card text-foreground font-sans font-medium text-sm md:text-base hover:border-primary/50 hover:bg-secondary transition-all hover:scale-105 active:scale-95 min-h-[44px]"
             >
               Справочник формул
             </button>
@@ -128,45 +128,45 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-6 border-y border-border/50">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="py-8 md:py-12 px-4 md:px-6 border-y border-border/50">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {STATS.map((s, i) => (
             <div
               key={s.label}
               className="text-center animate-fade-in-up"
               style={{ animationDelay: `${0.6 + i * 0.1}s` }}
             >
-              <div className="text-3xl font-mono font-bold gold-text mb-1">{s.value}</div>
-              <div className="text-sm text-muted-foreground font-sans">{s.label}</div>
+              <div className="text-2xl md:text-3xl font-mono font-bold gold-text mb-1">{s.value}</div>
+              <div className="text-xs md:text-sm text-muted-foreground font-sans">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-20 px-6">
+      <section className="py-12 md:py-20 px-4 md:px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-serif font-bold text-center mb-3 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-center mb-3 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             Возможности
           </h2>
-          <p className="text-muted-foreground text-center mb-12 font-sans animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-muted-foreground text-center mb-8 md:mb-12 font-sans text-sm md:text-base animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             Всё необходимое для научных вычислений
           </p>
 
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-3 md:gap-5">
             {FEATURES.map((f, i) => (
               <div
                 key={f.title}
-                className="group p-6 rounded-xl border border-border/60 bg-card hover:border-primary/40 hover:bg-secondary/30 transition-all duration-300 cursor-default animate-fade-in-up"
+                className="group p-4 md:p-6 rounded-xl border border-border/60 bg-card hover:border-primary/40 hover:bg-secondary/30 transition-all duration-300 cursor-default animate-fade-in-up"
                 style={{ animationDelay: `${0.3 + i * 0.1}s` }}
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors">
-                    <Icon name={f.icon} size={22} className="text-primary" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="p-2 md:p-2.5 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors flex-shrink-0">
+                    <Icon name={f.icon} size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-sans font-semibold text-foreground mb-1.5">{f.title}</h3>
-                    <p className="text-sm text-muted-foreground font-sans leading-relaxed">{f.desc}</p>
+                    <h3 className="font-sans font-semibold text-foreground mb-1 text-sm md:text-base">{f.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground font-sans leading-relaxed">{f.desc}</p>
                   </div>
                 </div>
               </div>
@@ -176,15 +176,15 @@ export default function HomePage({ onNavigate }: { onNavigate: (page: string) =>
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-6 text-center">
-        <div className="max-w-2xl mx-auto p-10 rounded-2xl border border-primary/20 bg-primary/5 relative overflow-hidden">
-          <div className="absolute -top-8 -right-8 text-9xl font-serif opacity-5 text-primary select-none">∫</div>
-          <div className="absolute -bottom-6 -left-6 text-8xl font-serif opacity-5 text-primary select-none">Σ</div>
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-3">Готовы к вычислениям?</h2>
-          <p className="text-muted-foreground font-sans mb-7">Начните работу с профессиональным инструментом прямо сейчас</p>
+      <section className="py-10 md:py-16 px-4 md:px-6 text-center">
+        <div className="max-w-2xl mx-auto p-6 md:p-10 rounded-2xl border border-primary/20 bg-primary/5 relative overflow-hidden">
+          <div className="absolute -top-8 -right-8 text-7xl md:text-9xl font-serif opacity-5 text-primary select-none">∫</div>
+          <div className="absolute -bottom-6 -left-6 text-6xl md:text-8xl font-serif opacity-5 text-primary select-none">Σ</div>
+          <h2 className="text-xl md:text-3xl font-serif font-bold mb-3">Готовы к вычислениям?</h2>
+          <p className="text-muted-foreground font-sans text-sm md:text-base mb-5 md:mb-7">Начните работу с профессиональным инструментом прямо сейчас</p>
           <button
             onClick={() => onNavigate("calc")}
-            className="px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-sans font-semibold hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
+            className="px-6 py-3 md:px-8 md:py-3.5 rounded-lg bg-primary text-primary-foreground font-sans font-semibold text-sm md:text-base hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 min-h-[44px]"
           >
             Начать вычисление
           </button>

@@ -130,27 +130,27 @@ export default function FormulasPage() {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-6 md:py-12 px-3 md:px-4">
       <div className="max-w-5xl mx-auto animate-fade-in-up">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-serif font-bold gold-text mb-2">Формулы</h1>
-          <p className="text-muted-foreground font-sans text-sm">Полная база математических и физических формул</p>
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold gold-text mb-1 md:mb-2">Формулы</h1>
+          <p className="text-muted-foreground font-sans text-xs md:text-sm">Полная база математических и физических формул</p>
         </div>
 
         {/* Search */}
-        <div className="relative mb-6">
+        <div className="relative mb-4 md:mb-6">
           <Icon name="Search" size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Найти формулу..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-foreground font-sans focus:outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/60"
+            className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-foreground font-sans text-sm focus:outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/60"
           />
         </div>
 
         {/* Topic toggles */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-6 md:mb-10">
           {TOPICS.map(t => {
             const c = COLOR_MAP[t.color];
             const active = activeTopics.includes(t.id);
@@ -158,23 +158,23 @@ export default function FormulasPage() {
               <button
                 key={t.id}
                 onClick={() => toggleTopic(t.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-sans font-medium transition-all hover:scale-105 ${active ? `${c.bg} ${c.border} ${c.text}` : "bg-card border-border text-muted-foreground hover:text-foreground"}`}
+                className={`flex items-center gap-1 md:gap-1.5 px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg border text-xs md:text-sm font-sans font-medium transition-all hover:scale-105 min-h-[36px] ${active ? `${c.bg} ${c.border} ${c.text}` : "bg-card border-border text-muted-foreground hover:text-foreground"}`}
               >
-                <Icon name={t.icon} size={13} />
+                <Icon name={t.icon} size={12} />
                 {t.title}
               </button>
             );
           })}
           <button
             onClick={() => setActiveTopics(TOPICS.map(t => t.id))}
-            className="px-3 py-1.5 rounded-lg border border-dashed border-border text-xs font-sans text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+            className="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg border border-dashed border-border text-xs font-sans text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[36px]"
           >
             Все
           </button>
         </div>
 
         {/* Formula grid */}
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           {visibleTopics.map((topic, ti) => {
             const c = COLOR_MAP[topic.color];
             const formulas = getFilteredFormulas(topic);
@@ -185,27 +185,27 @@ export default function FormulasPage() {
                 className="animate-fade-in-up"
                 style={{ animationDelay: `${ti * 0.08}s` }}
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`p-2 rounded-lg border ${c.border} ${c.bg}`}>
-                    <Icon name={topic.icon} size={18} className={c.text} />
+                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                  <div className={`p-1.5 md:p-2 rounded-lg border ${c.border} ${c.bg}`}>
+                    <Icon name={topic.icon} size={16} className={c.text} />
                   </div>
-                  <h2 className="font-serif font-bold text-xl text-foreground">{topic.title}</h2>
-                  <span className={`ml-auto text-xs font-mono px-2.5 py-0.5 rounded-full border ${c.badge}`}>
+                  <h2 className="font-serif font-bold text-lg md:text-xl text-foreground">{topic.title}</h2>
+                  <span className={`ml-auto text-xs font-mono px-2 py-0.5 rounded-full border ${c.badge}`}>
                     {formulas.length}
                   </span>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-3">
+                <div className="grid sm:grid-cols-2 gap-2 md:gap-3">
                   {formulas.map((f, fi) => (
                     <div
                       key={f.name}
-                      className={`p-4 rounded-xl border ${c.border} ${c.bg} group hover:scale-[1.01] transition-all cursor-default animate-fade-in-up`}
+                      className={`p-3 md:p-4 rounded-xl border ${c.border} ${c.bg} group hover:scale-[1.01] transition-all cursor-default animate-fade-in-up`}
                       style={{ animationDelay: `${ti * 0.08 + fi * 0.04}s` }}
                     >
-                      <div className="text-xs text-muted-foreground font-sans mb-2 group-hover:text-foreground/70 transition-colors">
+                      <div className="text-xs text-muted-foreground font-sans mb-1.5 group-hover:text-foreground/70 transition-colors">
                         {f.name}
                       </div>
-                      <div className={`font-mono text-sm leading-relaxed ${c.text} tracking-wide`}>
+                      <div className={`font-mono text-xs md:text-sm leading-relaxed ${c.text} tracking-wide break-all`}>
                         {f.expr}
                       </div>
                     </div>
@@ -217,20 +217,19 @@ export default function FormulasPage() {
         </div>
 
         {visibleTopics.length === 0 && (
-          <div className="text-center py-16 text-muted-foreground">
+          <div className="text-center py-12 md:py-16 text-muted-foreground">
             <div className="text-4xl font-serif mb-3">∅</div>
-            <p className="font-sans">Ничего не найдено</p>
+            <p className="font-sans text-sm">Ничего не найдено</p>
           </div>
         )}
 
         {/* Big formula showcase */}
-        <div className="mt-12 p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center relative overflow-hidden">
-          <div className="absolute top-4 left-6 text-7xl font-serif opacity-5 text-primary">∫</div>
-          <div className="absolute bottom-2 right-6 text-6xl font-serif opacity-5 text-primary">∑</div>
-          <div className="absolute top-1/2 left-1/4 text-5xl font-serif opacity-4 text-primary -translate-y-1/2">π</div>
+        <div className="mt-8 md:mt-12 p-5 md:p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center relative overflow-hidden">
+          <div className="absolute top-4 left-6 text-5xl md:text-7xl font-serif opacity-5 text-primary">∫</div>
+          <div className="absolute bottom-2 right-6 text-4xl md:text-6xl font-serif opacity-5 text-primary">∑</div>
           <div className="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-3">Формула Эйлера</div>
-          <div className="text-3xl md:text-4xl font-mono gold-text mb-3 tracking-wide">e^(iπ) + 1 = 0</div>
-          <p className="text-sm text-muted-foreground font-sans max-w-sm mx-auto">
+          <div className="text-2xl md:text-4xl font-mono gold-text mb-3 tracking-wide">e^(iπ) + 1 = 0</div>
+          <p className="text-xs md:text-sm text-muted-foreground font-sans max-w-sm mx-auto">
             Одна из красивейших формул математики, связывающая пять фундаментальных констант
           </p>
         </div>
