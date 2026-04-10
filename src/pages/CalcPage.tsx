@@ -244,12 +244,17 @@ export default function CalcPage() {
             </div>
 
             {/* Sci mode toggle */}
-            <div className="px-4 pt-3 flex justify-end">
+            <div className="px-4 pt-3 flex items-center justify-between">
+              <span className="text-xs text-muted-foreground font-sans">Режим</span>
               <button
                 onClick={() => setSciMode(v => !v)}
-                className={`text-xs font-mono px-3 py-1 rounded-md border transition-colors ${sciMode ? "border-primary/40 bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"}`}
+                className={`flex items-center gap-2.5 px-4 py-2 rounded-lg border font-sans text-sm font-medium transition-all hover:scale-105 active:scale-95 ${sciMode ? "border-primary/50 bg-primary/15 text-primary" : "border-border bg-secondary text-muted-foreground hover:text-foreground hover:border-primary/30"}`}
               >
-                {sciMode ? "Научный ✓" : "Научный"}
+                <div className={`w-8 h-4 rounded-full border transition-colors relative ${sciMode ? "bg-primary border-primary" : "bg-muted border-border"}`}>
+                  <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${sciMode ? "left-4" : "left-0.5"}`} />
+                </div>
+                {sciMode ? "Научный режим" : "Научный режим"}
+                <Icon name={sciMode ? "FlaskConical" : "FlaskConical"} size={14} className={sciMode ? "text-primary" : "text-muted-foreground"} />
               </button>
             </div>
 
