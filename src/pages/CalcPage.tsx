@@ -203,6 +203,7 @@ export default function CalcPage() {
   };
 
   // Geometry state
+  const [geoMode, setGeoMode] = useState<"area" | "volume">("area");
   const [geoShape, setGeoShape] = useState("circle");
   const [geoInputs, setGeoInputs] = useState<Record<string, string>>({});
   const [geoResult, setGeoResult] = useState<{ area?: string; volume?: string; perimeter?: string } | null>(null);
@@ -401,9 +402,27 @@ export default function CalcPage() {
 
         {activeTab === "geo" && (
           <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xl animate-scale-in">
+            {/* Area / Volume toggle */}
+            <div className="flex rounded-lg border border-border overflow-hidden mb-6">
+              <button
+                onClick={() => { setGeoMode("area"); setGeoShape("circle"); setGeoInputs({}); setGeoResult(null); }}
+                className={`flex-1 py-2.5 text-sm font-sans font-medium transition-colors flex items-center justify-center gap-2 ${geoMode === "area" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
+              >
+                <Icon name="Square" size={14} />
+                Площадь
+              </button>
+              <button
+                onClick={() => { setGeoMode("volume"); setGeoShape("sphere"); setGeoInputs({}); setGeoResult(null); }}
+                className={`flex-1 py-2.5 text-sm font-sans font-medium transition-colors flex items-center justify-center gap-2 ${geoMode === "volume" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
+              >
+                <Icon name="Box" size={14} />
+                Объём
+              </button>
+            </div>
+
             {/* Shape selector */}
-            <div className="grid grid-cols-3 gap-2 mb-6">
-              {GEO_SHAPES.map(s => (
+            <div className="grid grid-cols-4 gap-2 mb-6">
+              {GEO_SHAPES.filter(s => geoMode === "area" ? !s.formulas.volume : !!s.formulas.volume).map(s => (
                 <button
                   key={s.id}
                   onClick={() => { setGeoShape(s.id); setGeoInputs({}); setGeoResult(null); }}
