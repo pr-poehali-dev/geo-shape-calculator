@@ -89,7 +89,7 @@ export default function CalcPage() {
   const [sciMode, setSciMode] = useState(false);
 
   // Unit converter state
-  const [activeTab, setActiveTab] = useState<"calc" | "convert">("calc");
+  const [activeTab, setActiveTab] = useState<"calc" | "convert" | "geo">("calc");
   const [unitCat, setUnitCat] = useState<UnitCategory>("length");
   const [fromUnit, setFromUnit] = useState("m");
   const [toUnit, setToUnit] = useState("cm");
@@ -202,6 +202,110 @@ export default function CalcPage() {
     return "bg-card border-border/60 text-muted-foreground hover:bg-secondary hover:text-foreground text-xs";
   };
 
+  // Geometry state
+  const [geoShape, setGeoShape] = useState("circle");
+  const [geoInputs, setGeoInputs] = useState<Record<string, string>>({});
+  const [geoResult, setGeoResult] = useState<{ area?: string; volume?: string; perimeter?: string } | null>(null);
+
+  const GEO_SHAPES = [
+    {
+      id: "circle", label: "Круг", emoji: "⭕",
+      fields: [{ key: "r", label: "Радиус (r)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(Math.PI * v.r ** 2),
+        perimeter: formatNumber(2 * Math.PI * v.r),
+      }),
+      formulas: { area: "π · r²", perimeter: "2 · π · r" },
+    },
+    {
+      id: "rect", label: "Прямоугольник", emoji: "▭",
+      fields: [{ key: "a", label: "Длина (a)" }, { key: "b", label: "Ширина (b)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(v.a * v.b),
+        perimeter: formatNumber(2 * (v.a + v.b)),
+      }),
+      formulas: { area: "a · b", perimeter: "2 · (a + b)" },
+    },
+    {
+      id: "triangle", label: "Треугольник", emoji: "△",
+      fields: [{ key: "a", label: "Основание (a)" }, { key: "h", label: "Высота (h)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(0.5 * v.a * v.h),
+      }),
+      formulas: { area: "½ · a · h" },
+    },
+    {
+      id: "trapeze", label: "Трапеция", emoji: "⏢",
+      fields: [{ key: "a", label: "Основание a" }, { key: "b", label: "Основание b" }, { key: "h", label: "Высота h" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(0.5 * (v.a + v.b) * v.h),
+      }),
+      formulas: { area: "½ · (a + b) · h" },
+    },
+    {
+      id: "sphere", label: "Шар", emoji: "🔵",
+      fields: [{ key: "r", label: "Радиус (r)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(4 * Math.PI * v.r ** 2),
+        volume: formatNumber((4 / 3) * Math.PI * v.r ** 3),
+      }),
+      formulas: { area: "4 · π · r²", volume: "4/3 · π · r³" },
+    },
+    {
+      id: "cylinder", label: "Цилиндр", emoji: "🥫",
+      fields: [{ key: "r", label: "Радиус (r)" }, { key: "h", label: "Высота (h)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(2 * Math.PI * v.r * (v.r + v.h)),
+        volume: formatNumber(Math.PI * v.r ** 2 * v.h),
+      }),
+      formulas: { area: "2π·r·(r+h)", volume: "π · r² · h" },
+    },
+    {
+      id: "cone", label: "Конус", emoji: "🔺",
+      fields: [{ key: "r", label: "Радиус (r)" }, { key: "h", label: "Высота (h)" }],
+      calc: (v: Record<string, number>) => {
+        const l = Math.sqrt(v.r ** 2 + v.h ** 2);
+        return {
+          area: formatNumber(Math.PI * v.r * (v.r + l)),
+          volume: formatNumber((1 / 3) * Math.PI * v.r ** 2 * v.h),
+        };
+      },
+      formulas: { area: "π·r·(r+l)", volume: "⅓ · π · r² · h" },
+    },
+    {
+      id: "cube", label: "Куб", emoji: "⬛",
+      fields: [{ key: "a", label: "Сторона (a)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(6 * v.a ** 2),
+        volume: formatNumber(v.a ** 3),
+      }),
+      formulas: { area: "6 · a²", volume: "a³" },
+    },
+    {
+      id: "box", label: "Параллелепипед", emoji: "📦",
+      fields: [{ key: "a", label: "Длина (a)" }, { key: "b", label: "Ширина (b)" }, { key: "c", label: "Высота (c)" }],
+      calc: (v: Record<string, number>) => ({
+        area: formatNumber(2 * (v.a * v.b + v.b * v.c + v.a * v.c)),
+        volume: formatNumber(v.a * v.b * v.c),
+      }),
+      formulas: { area: "2(ab+bc+ac)", volume: "a · b · c" },
+    },
+  ];
+
+  const handleGeoCalc = () => {
+    const shape = GEO_SHAPES.find(s => s.id === geoShape);
+    if (!shape) return;
+    const vals: Record<string, number> = {};
+    for (const f of shape.fields) {
+      const v = parseFloat(geoInputs[f.key] || "");
+      if (isNaN(v) || v <= 0) { setGeoResult(null); return; }
+      vals[f.key] = v;
+    }
+    setGeoResult(shape.calc(vals));
+  };
+
+  const currentShape = GEO_SHAPES.find(s => s.id === geoShape)!;
+
   const catEntries = Object.entries(UNIT_CONVERSIONS) as [UnitCategory, typeof UNIT_CONVERSIONS[UnitCategory]][];
 
   return (
@@ -222,11 +326,18 @@ export default function CalcPage() {
             Калькулятор
           </button>
           <button
+            onClick={() => setActiveTab("geo")}
+            className={`flex-1 py-2.5 text-sm font-sans font-medium transition-colors ${activeTab === "geo" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
+          >
+            <Icon name="Shapes" size={14} className="inline mr-2" />
+            Геометрия
+          </button>
+          <button
             onClick={() => setActiveTab("convert")}
             className={`flex-1 py-2.5 text-sm font-sans font-medium transition-colors ${activeTab === "convert" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:text-foreground"}`}
           >
             <Icon name="ArrowLeftRight" size={14} className="inline mr-2" />
-            Перевод единиц
+            Единицы
           </button>
         </div>
 
@@ -285,6 +396,95 @@ export default function CalcPage() {
                 </button>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeTab === "geo" && (
+          <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xl animate-scale-in">
+            {/* Shape selector */}
+            <div className="grid grid-cols-3 gap-2 mb-6">
+              {GEO_SHAPES.map(s => (
+                <button
+                  key={s.id}
+                  onClick={() => { setGeoShape(s.id); setGeoInputs({}); setGeoResult(null); }}
+                  className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border text-xs font-sans font-medium transition-all hover:scale-105 ${geoShape === s.id ? "bg-primary/15 border-primary/50 text-primary" : "bg-secondary border-border text-muted-foreground hover:text-foreground hover:border-primary/30"}`}
+                >
+                  <span className="text-xl">{s.emoji}</span>
+                  <span>{s.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Formulas hint */}
+            <div className="mb-5 p-3 rounded-lg bg-background/60 border border-border/50">
+              <div className="text-xs text-muted-foreground font-sans mb-1.5">Формулы</div>
+              <div className="flex flex-wrap gap-3">
+                {currentShape.formulas.area && (
+                  <div className="text-xs font-mono text-primary">S = {currentShape.formulas.area}</div>
+                )}
+                {currentShape.formulas.volume && (
+                  <div className="text-xs font-mono text-teal-400">V = {currentShape.formulas.volume}</div>
+                )}
+                {currentShape.formulas.perimeter && (
+                  <div className="text-xs font-mono text-blue-400">P = {currentShape.formulas.perimeter}</div>
+                )}
+              </div>
+            </div>
+
+            {/* Inputs */}
+            <div className="space-y-3 mb-5">
+              {currentShape.fields.map(f => (
+                <div key={f.key}>
+                  <label className="text-xs text-muted-foreground font-sans mb-1.5 block">{f.label}</label>
+                  <input
+                    type="number"
+                    value={geoInputs[f.key] || ""}
+                    onChange={e => setGeoInputs(prev => ({ ...prev, [f.key]: e.target.value }))}
+                    placeholder="Введите значение..."
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground font-mono text-lg focus:outline-none focus:border-primary/60 transition-colors"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleGeoCalc}
+              className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-sans font-semibold hover:bg-primary/90 transition-all hover:scale-[1.01] active:scale-[0.99] mb-4"
+            >
+              Вычислить
+            </button>
+
+            {geoResult && (
+              <div className="grid gap-3 animate-scale-in">
+                {geoResult.area && (
+                  <div className="p-4 rounded-xl bg-primary/8 border border-primary/25 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-muted-foreground font-sans mb-0.5">Площадь (S)</div>
+                      <div className="text-xs font-mono text-muted-foreground">S = {currentShape.formulas.area}</div>
+                    </div>
+                    <div className="text-2xl font-mono font-bold gold-text">{geoResult.area}</div>
+                  </div>
+                )}
+                {geoResult.volume && (
+                  <div className="p-4 rounded-xl bg-teal-500/8 border border-teal-500/25 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-muted-foreground font-sans mb-0.5">Объём (V)</div>
+                      <div className="text-xs font-mono text-muted-foreground">V = {currentShape.formulas.volume}</div>
+                    </div>
+                    <div className="text-2xl font-mono font-bold teal-text">{geoResult.volume}</div>
+                  </div>
+                )}
+                {geoResult.perimeter && (
+                  <div className="p-4 rounded-xl bg-blue-500/8 border border-blue-500/25 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-muted-foreground font-sans mb-0.5">Периметр / длина (P)</div>
+                      <div className="text-xs font-mono text-muted-foreground">P = {currentShape.formulas.perimeter}</div>
+                    </div>
+                    <div className="text-2xl font-mono font-bold text-blue-400">{geoResult.perimeter}</div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
